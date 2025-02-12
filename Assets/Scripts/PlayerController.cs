@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,14 +6,10 @@ public class PlayerController : MonoBehaviour
     public float upForce = 5f;
     public float downForce = 2f;
 
-    public Text scoreText;
-    private int score = 0;
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        GetComponent<Rigidbody2D>().gravityScale = 0;
+        rb.gravityScale = 0;
     }
 
     void Update()
@@ -23,10 +18,17 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, upForce);
         }
-
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -downForce);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("ScoreZone"))
+        {
+            ScoreManager.instance.AddScore(1);
         }
     }
 
